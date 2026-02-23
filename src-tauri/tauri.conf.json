@@ -7,7 +7,7 @@
   },
   "bundle": {
     "active": true,
-    "category": "DeveloperTool",
+    "category": "Utility",
     "copyright": "kamyu",
     "targets": "all",
     "externalBin": [],
@@ -37,7 +37,8 @@
     "linux": {
       "deb": {
         "depends": []
-      }
+      },
+
     }
   },
   "productName": "hr-osc",
