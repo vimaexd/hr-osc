@@ -1,4 +1,4 @@
-import { BaseDirectory, createDir, exists, readTextFile, writeTextFile } from '@tauri-apps/api/fs';
+import { BaseDirectory, mkdir as createDir, exists, readTextFile, writeTextFile } from '@tauri-apps/plugin-fs';
 import { useConfig } from './states';
 
 export const defaultConfig: IConfig = {
@@ -18,23 +18,21 @@ export const defaultConfig: IConfig = {
 
 async function writeDefaultConfig() {
   await writeTextFile(
-    {
-      path: 'data/config.json',
-      contents: JSON.stringify(defaultConfig, null, 2),
-    },
-    { dir: BaseDirectory.App }
+    'data/config.json',
+    JSON.stringify(defaultConfig, null, 2),
+    {baseDir: BaseDirectory.AppData}
   );
 }
 
 export async function getConfig() {
-  createDir('data', { recursive: true, dir: BaseDirectory.App });
-  const isExists = (await exists('data/config.json', { dir: BaseDirectory.App })) as unknown as boolean;
+  createDir('data', { recursive: true, baseDir: BaseDirectory.AppData });
+  const isExists = (await exists('data/config.json', { baseDir: BaseDirectory.AppData })) as unknown as boolean;
   if (!isExists) {
     await writeDefaultConfig();
   }
 
   let config = { ...defaultConfig };
-  const read = await readTextFile('data/config.json', { dir: BaseDirectory.App });
+  const read = await readTextFile('data/config.json', { baseDir: BaseDirectory.AppData });
   try {
     const parse = JSON.parse(read);
     config = { ...config, ...parse };
@@ -48,15 +46,13 @@ export async function getConfig() {
 
 export async function saveConfig(config: IConfig) {
   await writeTextFile(
-    {
-      path: 'data/config.json',
-      contents: JSON.stringify(config, null, 2),
-    },
-    { dir: BaseDirectory.App }
+    'data/config.json',
+    JSON.stringify(config, null, 2),
+    { baseDir: BaseDirectory.AppData }
   );
 
   let newConfig = { ...defaultConfig };
-  const read = await readTextFile('data/config.json', { dir: BaseDirectory.App });
+  const read = await readTextFile('data/config.json', { baseDir: BaseDirectory.AppData });
   try {
     const parse = JSON.parse(read);
     newConfig = { ...newConfig, ...parse };

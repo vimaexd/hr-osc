@@ -1,4 +1,4 @@
-import { Body, fetch } from '@tauri-apps/api/http';
+import { Body, fetch } from '@tauri-apps/plugin-http';
 import { v4 as uuidv4 } from 'uuid';
 
 type GetWidgetResponse = {
@@ -19,7 +19,7 @@ export const getWebSocketUrl = async (widgetId: string) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: Body.json({
+    body: JSON.stringify({
       id: requestId,
       jsonrpc: '2.0',
       method: 'getWidget',
