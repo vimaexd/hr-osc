@@ -1,4 +1,4 @@
-import { Body, fetch } from '@tauri-apps/plugin-http';
+import { fetch } from '@tauri-apps/plugin-http';
 import { v4 as uuidv4 } from 'uuid';
 
 type GetWidgetResponse = {
@@ -14,7 +14,7 @@ type GetWidgetResponse = {
 export const getWebSocketUrl = async (widgetId: string) => {
   const requestId = uuidv4();
 
-  const response = await fetch<GetWidgetResponse>('https://api.stromno.com/v1/api/public/rpc', {
+  const response = await fetch('https://api.stromno.com/v1/api/public/rpc', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,8 +33,10 @@ export const getWebSocketUrl = async (widgetId: string) => {
     return '';
   }
 
-  if (response.data.error) {
+  let data = await response.json();
+  if (data.error) {
     return '';
   }
-  return response.data.result.ramielUrl;
+
+  return data.ramielUrl;
 };
