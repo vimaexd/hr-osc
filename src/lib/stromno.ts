@@ -38,5 +38,5 @@ export const getWebSocketUrl = async (widgetId: string) => {
     return '';
   }
 
-  return data.ramielUrl;
+  return data.result.ramielUrl;
 };
